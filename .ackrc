@@ -1,0 +1,17 @@
+--smart-case
+--color
+--color-match=cyan
+--color-lineno=green
+--color-filename=green
+
+--ignore-dir=tmp
+--ignore-dir=cache
+
+--type-add=ruby=haml
+--type-add=vim=vimrc
+--type-add=js=json
+--type-add=css=scss
+
+--type-set=coffee=coffee,hamlc
+
+--follow
