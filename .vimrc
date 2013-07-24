@@ -1,9 +1,10 @@
+set nocompatible
+
 execute pathogen#infect()
 
 syntax enable
 filetype plugin indent on
 
-set nocompatible
 set autoindent
 set smartindent
 set expandtab
@@ -12,28 +13,27 @@ set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 set backspace=2
-set ai
-set si
-set wrap
 set ignorecase
 set smartcase
 set incsearch
 set hlsearch
-set magic
 set showmatch
-set ruler
 set visualbell
-set history=2000
 set wildmenu
-set mouse=a
-set ttymouse=xterm2
-set t_Co=256
+set title
 set splitbelow
 set splitright
-set tags=./tags;
+set ruler
+set number
+set cursorline
+set wrap
 set noswapfile
+set ttyfast
+set mouse=a
+set history=2000
+set t_Co=256
+set tags=./tags;
 set background=dark
-set nu
 
 if has("gui_running")
   autocmd VimEnter * NERDTree
