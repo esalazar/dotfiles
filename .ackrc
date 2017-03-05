@@ -6,6 +6,7 @@
 
 --ignore-dir=tmp
 --ignore-dir=cache
+--ignore-dir=log
 
 --type-add=ruby=haml
 --type-add=vim=vimrc
