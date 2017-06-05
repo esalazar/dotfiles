@@ -23,7 +23,7 @@ HISTFILE=~/.history
 PROMPT="%{$fg[$reset_color]%}%n%{$reset_color%}@%{$fg[$reset_color]%}%c%{$reset_color%}%(!.#.>) "
 RPROMPT="[%m %t]"
 
-alias 'ls=ls -Ahl --color=auto'
+alias 'ls=ls -Ahl --color=auto --group-directories-first'
 alias 'rm=rm -iv'
 alias 'mv=mv -iv'
 alias 'cp=cp -iv'
