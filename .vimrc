@@ -1,43 +1,37 @@
 set nocompatible
 
-syntax on
-filetype off
 
-
-" Plugins
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" Let Vundle manage itself
-Plugin 'gmarik/Vundle.vim'
+"" Plugins
+call plug#begin('~/.vim/plugged')
 
 " Create a git wrapper
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 
 " End if, def, and other statements
-Plugin 'tpope/vim-endwise'
+Plug 'tpope/vim-endwise'
 
 " Adjust indentation based on file
-Plugin 'tpope/vim-sleuth'
+Plug 'tpope/vim-sleuth'
 
 " Change surounding parens or quotes
-Plugin 'tpope/vim-surround'
+Plug 'tpope/vim-surround'
 
 " Allow comment shortcuts
-Plugin 'tpope/vim-commentary'
+Plug 'tpope/vim-commentary'
 
 " Provide syntax checking
-Plugin 'scrooloose/syntastic'
+Plug 'scrooloose/syntastic'
 let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_python_flake8_args='--ignore=E501'
+let g:syntastic_python_flake8_args = '--ignore=E501'
 let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_check_on_wq = 0
 
 " Show git changes in a file
-Plugin 'mhinz/vim-signify'
+Plug 'mhinz/vim-signify'
 let g:signify_sign_change = '~'
 
 " Add a filesystem explorer
-Plugin 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 nnoremap <f2> :NERDTreeToggle<cr>
 if has("gui_running")
   autocmd VimEnter * NERDTree
@@ -45,78 +39,97 @@ if has("gui_running")
 endif
 
 " Fuzzy search working directory
-Plugin 'ctrlpvim/ctrlp.vim'
-let g:ctrlp_match_window = 'bottom,order:ttb'
-let g:ctrlp_switch_buffer = 0
-let g:ctrlp_working_path_mode = 0
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
 
 " Search with ack
-Plugin 'mileszs/ack.vim'
+Plug 'mileszs/ack.vim'
 cnoreabbrev Ack Ack!
 
+" Tag projects
+Plug 'ludovicchabant/vim-gutentags'
+
 " Enhance status line
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-let g:airline_left_sep=''
-let g:airline_right_sep=''
-let g:airline_powerline_fonts = 1
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#hunks#non_zero_only = 1
+let g:airline_symbols_ascii = 1
+let g:airline_theme = 'bubblegum'
 let g:airline#extensions#default#layout = [
-    \ [ 'c' ],
-    \ [ 'b', 'a', 'warning', 'error' ]
+    \ [ 'a', 'c' ],
+    \ [ 'b', 'error', 'warning' ]
     \ ]
-let g:airline_theme='base16'
+let g:airline_mode_map = {
+    \ '__' : '-',
+    \ 'n'  : 'N',
+    \ 'i'  : 'I',
+    \ 'R'  : 'R',
+    \ 'c'  : 'C',
+    \ 'v'  : 'V',
+    \ 'V'  : 'V',
+    \ '' : 'V',
+    \ 's'  : 'S',
+    \ 'S'  : 'S',
+    \ '' : 'S',
+    \ }
 
 " Complete parens, brackets, and quotes
-Plugin 'jiangmiao/auto-pairs'
+Plug 'jiangmiao/auto-pairs'
 
 " Identify indentation with lines
-Plugin 'Yggdroot/indentLine'
+Plug 'Yggdroot/indentLine'
 let g:indentLine_char = '│'
 
 " Align text
-Plugin 'godlygeek/tabular'
+Plug 'godlygeek/tabular'
 
 " Autocomplete engine
-Plugin 'Valloric/YouCompleteMe'
-let g:ycm_collect_identifiers_from_tags_files = 1
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --gocode-completer --tern-completer  --clang-completer' }
+let g:ycm_goto_buffer_command = 'horizontal-split'
+let g:ycm_seed_identifiers_with_syntax = 1
 
 " Highlight matching tags
-Plugin 'Valloric/MatchTagAlways'
+Plug 'Valloric/MatchTagAlways', { 'for': ['html', 'xhtml', 'xml', 'jinja'] }
 
 " Introduce new colorspace
-Plugin 'chriskempson/base16-vim'
-let base16colorspace=256
+Plug 'chriskempson/base16-vim'
+let base16colorspace = 256
 "
 " Color highlighter
-Plugin 'ap/vim-css-color'
+Plug 'ap/vim-css-color'
+
+" Javascript support
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 
 " Coffeescript support
-Plugin 'kchmck/vim-coffee-script'
+Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
 
 " Jade support
-Plugin 'digitaltoad/vim-jade'
+Plug 'digitaltoad/vim-jade', { 'for': 'pug' }
 
 " Rails support
-Plugin 'tpope/vim-rails'
+Plug 'tpope/vim-rails', { 'for': ['ruby', 'haml'] }
 
-call vundle#end()
-filetype plugin indent on
+call plug#end()
 
 
-" Settings
+"" Settings
+
+" Indents
 set autoindent
 set smartindent
-au! FileType python setl nosmartindent
 set backspace=indent,eol,start
 
+" Tabbing
 set expandtab
 set smarttab
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 
+" Searching
 set ignorecase
 set magic
 set smartcase
@@ -124,76 +137,105 @@ set incsearch
 set hlsearch
 set showmatch
 
-set timeoutlen=1000 ttimeoutlen=0
-set noerrorbells
-set novisualbell
-
-set wildmenu
-set wildmode=longest,full
-set wildignorecase
-set wildignore=*.o,*.obj,*.bak,*.exe,*pyc,*zip
-
+" Global interface
 set title
 set laststatus=2
 set shortmess=at
-set conceallevel=0
-set splitbelow
-set splitright
+set timeoutlen=1000 ttimeoutlen=0
+set noerrorbells
+set novisualbell
+set confirm
+set lazyredraw
+set ttyfast
 
+" Code interface
 set wrap
 set ruler
 set number
 set cursorline
 set scrolloff=2
+set conceallevel=0
 
+" Menus
+set wildmenu
+set wildmode=longest,full
+set wildignorecase
+set wildignore=*.o,*.obj,*.bak,*.exe,*pyc,*zip
+
+" Windows
+set splitbelow
+set splitright
+
+" Theme
 set encoding=utf8
 set t_Co=256
 set background=dark
-colorscheme base16-railscasts
+colorscheme base16-tomorrow-night
 
-set noswapfile
-set lazyredraw
-set ttyfast
-set confirm
-
+" Clipboard support
 if has('clipboard')
   if has('unnamedplus')
     set clipboard=unnamed,unnamedplus
   else
-    set clipboard=unnamed
+    set clipboard+=unnamed
   endif
 endif
 
+" Mouse support
 set mouse=a
 set mousehide
+
+" Undoing
+if has("persistent_undo")
+    set undodir=~/.vim/undo/
+    set undofile
+endif
+
+" Misc
 set history=2000
 set tags=./tags;
+set noswapfile
 
 
-" Commands
+"" Commands
 command W w !sudo tee % > /dev/null
 
 
-" Abbreviations
+"" Abbreviations
 iabbrev teh the
 
 
-" Mappings
+"" Mappings
 let mapleader = "\<Space>"
 
+" Movements
 map j gj
 map k gk
+
+" Windows
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
+" Escaping
 inoremap <leader><Enter> <Esc>
 onoremap <leader><Enter> <Esc>
 vnoremap <leader><Enter> <Esc>gV
 
+" Plugins
+nnoremap <Leader>a :Ack!<Space>
+nnoremap <Leader>d :YcmCompleter GoToDeclaration<cr>
+nnoremap <leader>f :FZF<cr>
+
+" Misc
 nnoremap Q <nop>
 nnoremap Y y$
 nnoremap <leader>/ :nohlsearch<CR>
 
+
+"" Filetypes
+
+" Python
+autocmd FileType python setlocal completeopt-=preview
 autocmd FileType python nnoremap <buffer> <F9> :exec '!clear; python' shellescape(@%, 1)<cr>
